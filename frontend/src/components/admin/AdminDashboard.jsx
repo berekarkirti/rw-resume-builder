@@ -9,8 +9,7 @@ import {
   Filter, 
   Eye, 
   Download, 
-  RotateCcw, 
-  CheckCircle2, 
+  CheckCircle2,  
   AlertCircle, 
   Clock, 
   UserCheck, 
@@ -69,13 +68,11 @@ export const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [branchFilter, courseFilter, statusFilter]);
-
-  const handleSearchSubmit = (e) => {
-    e?.preventDefault();
-    fetchData();
-  };
+    const timer = setTimeout(() => {
+      fetchData();
+    }, searchTerm ? 300 : 0);
+    return () => clearTimeout(timer);
+  }, [searchTerm, branchFilter, courseFilter, statusFilter]);
 
   const handleEditInBuilder = (studentId) => {
     loadProfile(studentId);
@@ -147,15 +144,6 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={fetchData}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Refresh Records</span>
-            </button>
-          </div>
         </div>
 
         {/* Overview Metric Stats Cards */}
@@ -193,26 +181,16 @@ export const AdminDashboard = () => {
 
         {/* Filter and Search Bar */}
         <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-2xs space-y-3">
-          <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3 items-center">
-            {/* Search Input */}
-            <div className="relative flex-1 w-full">
-              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by student name, ID (e.g. RNW-2026-WD-108), or role..."
-                className="w-full pl-9 pr-4 py-2 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-rnw-red bg-white"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-4 py-2 bg-rnw-red hover:bg-rnw-red-dark text-white text-xs font-semibold rounded-lg shrink-0 shadow-xs"
-            >
-              Search Records
-            </button>
-          </form>
+          <div className="relative w-full">
+            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by student name, ID (e.g. RNW-2026-WD-108), or role..."
+              className="w-full pl-9 pr-4 py-2 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-rnw-red bg-white"
+            />
+          </div>
 
           {/* Dropdown Filters */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
