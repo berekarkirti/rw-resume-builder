@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://rw-resume-builder.onrender.com/api/:path*"
+    }
+  ]
+}
